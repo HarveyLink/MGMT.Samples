@@ -73,7 +73,7 @@ namespace DeployUsingARMTemplate
             }
         }
 
-        public static async Task Main1(string[] args)
+        public static async Task Main(string[] args)
         {
             try
             {

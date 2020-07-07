@@ -180,7 +180,7 @@ namespace ManageResource
                 }
             }
         }
-        public static async Task Main2(string[] args)
+        public static async Task Main(string[] args)
         {
             try
             {

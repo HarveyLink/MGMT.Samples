@@ -437,7 +437,7 @@ namespace ManageVirtualNetwork
             }
         }
 
-        public static async Task Main6(string[] args)
+        public static async Task Main(string[] args)
         {
             try
             {
