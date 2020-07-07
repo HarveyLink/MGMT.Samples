@@ -47,17 +47,18 @@ namespace ManageEventHub
 
             try
             {
+                await ResourceGroupHelper.CreateOrUpdateResourceGroup(rgName, region);
+
                 //============================================================
                 // Create an event hub namespace
                 //
-                await ResourceGroupHelper.CreateOrUpdateResourceGroup(rgName, region);
 
                 Utilities.Log("Creating a namespace");
 
                 var rawResult = await namespaces.StartCreateOrUpdateAsync(
                     rgName,
                     namespaceName1,
-                    new EHNamespace()
+                    new EHNamespace
                     {
                         Location = "eastus2"
                     });
@@ -75,8 +76,8 @@ namespace ManageEventHub
                     storageAccountName,
                     new StorageAccountCreateParameters(
                         new Azure.ResourceManager.Storage.Models.Sku("Standard_LRS"),
-                        new Kind("StorageV2")
-                        , "eastus2")
+                        new Kind("StorageV2"), 
+                        "eastus2")
                     )).WaitForCompletionAsync()).Value;
                 var container = await blobContainers.CreateAsync(
                     rgName,
@@ -91,19 +92,19 @@ namespace ManageEventHub
                     rgName,
                     namespace1.Name,
                     eventHubName1,
-                    new Eventhub()
+                    new Eventhub
                     {
                         MessageRetentionInDays = 4,
                         PartitionCount = 4,
                         Status = EntityStatus.Active,
                         // Optional - configure data capture
-                        CaptureDescription = new CaptureDescription()
+                        CaptureDescription = new CaptureDescription
                         {
                             Enabled = true,
                             Encoding = EncodingCaptureDescription.Avro,
                             IntervalInSeconds = 120,
                             SizeLimitInBytes = 10485763,
-                            Destination = new Destination()
+                            Destination = new Destination
                             {
                                 Name = "EventHubArchive.AzureBlockBlob",
                                 BlobContainer = "datacpt",
@@ -120,7 +121,7 @@ namespace ManageEventHub
                     namespaceName1,
                     eventHubName1,
                     "cg1",
-                    new ConsumerGroup()
+                    new ConsumerGroup
                     {
                         UserMetadata = "sometadata"
                     }
@@ -131,7 +132,7 @@ namespace ManageEventHub
                     namespaceName1,
                     eventHubName1,
                     "listenrule1",
-                    new AuthorizationRule()
+                    new AuthorizationRule
                     {
                         Rights = new List<AccessRights>() { AccessRights.Listen, AccessRights.Send }
                     }
@@ -151,6 +152,7 @@ namespace ManageEventHub
                 var listResult = await consumerGroups.ListByEventHubAsync(rgName, namespaceName1, eventHubName1).ToEnumerableAsync();
 
                 Utilities.Log("Retrieved consumer groups");
+
                 foreach (var group in listResult)
                 {
                     Utilities.Print(group);
@@ -184,7 +186,7 @@ namespace ManageEventHub
                     eventHubName2,
                     "cg2",
                     // Optional
-                    new ConsumerGroup() 
+                    new ConsumerGroup
                     { 
                         UserMetadata = "sometadata" 
                     }
@@ -201,6 +203,7 @@ namespace ManageEventHub
                 listResult = await consumerGroups.ListByEventHubAsync(rgName, namespaceName1, eventHubName2).ToEnumerableAsync();
 
                 Utilities.Log("Retrieved consumer groups in the seoond event hub");
+
                 foreach (var group in listResult)
                 {
                     Utilities.Print(group);
@@ -215,7 +218,7 @@ namespace ManageEventHub
                 var rawResult2 = await namespaces.StartCreateOrUpdateAsync(
                     rgName,
                     namespaceName2,
-                    new EHNamespace()
+                    new EHNamespace
                     {
                         Location = "eastus2"
                     });
@@ -232,9 +235,7 @@ namespace ManageEventHub
                 Utilities.Log("Created an event hub namespace along with event hub");
                 Utilities.Print(namespace2);
 
-                var listResult3 = await eventHubs.ListByNamespaceAsync(rgName, namespaceName2).ToEnumerableAsync();
-
-                foreach (var eh in listResult3)
+                foreach (var eh in await eventHubs.ListByNamespaceAsync(rgName, namespaceName2).ToEnumerableAsync())
                 {
                     Utilities.Print(eh);
                 }

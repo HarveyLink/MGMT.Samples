@@ -117,7 +117,7 @@ namespace ManageResource
                     new GenericResource
                     {
                         Location = "westus",
-                        Sku = new Sku()
+                        Sku = new Sku
                         {
                             Name = "Standard_LRS",
                             Tier = "Standard"

@@ -1,11 +1,12 @@
-﻿using Azure.Core;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
+using Azure.Core;
 using Azure.Identity;
 using Azure.ResourceManager.EventHubs;
 using Azure.ResourceManager.EventHubs.Models;
 using Samples.Helpers;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -41,17 +42,18 @@ namespace ManageEventHubGeoDisasterRecovery
 
             try
             {
+                await ResourceGroupHelper.CreateOrUpdateResourceGroup(rgName, region);
+
                 //============================================================
                 // Create resource group for the namespaces and recovery pairings
                 //
-                await ResourceGroupHelper.CreateOrUpdateResourceGroup(rgName, region);
 
                 Utilities.Log($"Creating primary event hub namespace {primaryNamespaceName}");
 
                 var primaryResult = await namespaces.StartCreateOrUpdateAsync(
                     rgName,
                     primaryNamespaceName,
-                    new EHNamespace()
+                    new EHNamespace
                     {
                         Location = "southcentralus"
                     });
@@ -65,7 +67,7 @@ namespace ManageEventHubGeoDisasterRecovery
                 var secondaryResult = await namespaces.StartCreateOrUpdateAsync(
                     rgName,
                     secondaryNamespaceName,
-                    new EHNamespace()
+                    new EHNamespace
                     {
                         Location = "northcentralus"
                     });
@@ -84,12 +86,11 @@ namespace ManageEventHubGeoDisasterRecovery
                     rgName,
                     primaryNamespaceName,
                     geoDRName,
-                    new ArmDisasterRecovery()
+                    new ArmDisasterRecovery
                     {
                         PartnerNamespace = secondaryNamespace.Id
                     }
                     )).Value;
-
                 while ((await disasterRecoveryConfigs.GetAsync(rgName, primaryNamespaceName, geoDRName)).Value.ProvisioningState != ProvisioningStateDR.Succeeded)
                 {
                     Utilities.Log("Wait for create disaster recovery");
@@ -208,7 +209,7 @@ namespace ManageEventHubGeoDisasterRecovery
             }
         }
 
-        public static async Task Main(string[] args)
+        public static async Task Main5(string[] args)
         {
             try
             {
