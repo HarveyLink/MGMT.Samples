@@ -258,7 +258,7 @@ namespace ManageEventHub
             }
         }
 
-        public static async Task Main(string[] args)
+        public static async Task Main8(string[] args)
         {
             try
             {

@@ -166,7 +166,7 @@ namespace ManageKeyVault
 
         }
 
-        public static async Task Main(string[] args)
+        public static async Task Main6(string[] args)
         {
             try
             {

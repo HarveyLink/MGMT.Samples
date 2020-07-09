@@ -266,7 +266,7 @@ namespace ManageIPAddress
             }
         }
 
-        public static async Task Main(string[] args)
+        public static async Task Main5(string[] args)
         {
             try
             {

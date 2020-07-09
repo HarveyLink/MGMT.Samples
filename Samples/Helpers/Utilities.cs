@@ -439,6 +439,11 @@ namespace Samples.Helpers
             return namer.RandomGuid();
         }
 
+        public static string CreateRandomName(string namePrefix)
+        {
+            return RandomResourceName(namePrefix, 15);
+        }
+
         public static async Task<List<T>> ToEnumerableAsync<T>(this IAsyncEnumerable<T> asyncEnumerable)
         {
             List<T> list = new List<T>();

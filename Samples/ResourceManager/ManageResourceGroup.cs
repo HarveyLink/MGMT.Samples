@@ -111,7 +111,7 @@ namespace ManageResourceGroup
             }
         }
 
-        public static async Task Main(string[] args)
+        public static async Task Main1s(string[] args)
         {
             try
             {

@@ -209,7 +209,7 @@ namespace ManageEventHubGeoDisasterRecovery
             }
         }
 
-        public static async Task Main(string[] args)
+        public static async Task Main7(string[] args)
         {
             try
             {
