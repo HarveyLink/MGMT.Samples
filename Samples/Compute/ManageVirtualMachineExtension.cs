@@ -1,4 +1,7 @@
-﻿using Azure.Core;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
+using Azure.Core;
 using Azure.Identity;
 using Azure.ResourceManager.Compute;
 using Azure.ResourceManager.Compute.Models;
@@ -8,8 +11,6 @@ using Samples.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ManageVirtualMachineExtension
@@ -126,15 +127,15 @@ namespace ManageVirtualMachineExtension
                 var vnet = new VirtualNetwork()
                 {
                     Location = location,
-                    AddressSpace = new AddressSpace() { AddressPrefixes = new List<string>() { "10.0.0.0/16" } },
-                    Subnets = new List<Subnet>()
-                {
-                    new Subnet()
+                    AddressSpace = new AddressSpace { AddressPrefixes = new List<string> { "10.0.0.0/16" } },
+                    Subnets = new List<Subnet>
                     {
-                        Name = "mySubnet",
-                        AddressPrefix = "10.0.0.0/28",
-                    }
-                },
+                        new Subnet
+                        {
+                            Name = "mySubnet",
+                            AddressPrefix = "10.0.0.0/28",
+                        }
+                    },
                 };
                 vnet = await virtualNetworks
                     .StartCreateOrUpdate(rgName, linuxVmName + "_vent", vnet).WaitForCompletionAsync();
@@ -143,18 +144,18 @@ namespace ManageVirtualMachineExtension
 
                 // Create Network Interface
                 Utilities.Log("Creating a Network Interface");
-                var nic = new NetworkInterface()
+                var nic = new NetworkInterface
                 {
                     Location = location,
                     IpConfigurations = new List<NetworkInterfaceIPConfiguration>()
                 {
-                    new NetworkInterfaceIPConfiguration()
+                    new NetworkInterfaceIPConfiguration
                     {
                         Name = "Primary",
                         Primary = true,
-                        Subnet = new Subnet() { Id = vnet.Subnets.First().Id },
+                        Subnet = new Subnet { Id = vnet.Subnets.First().Id },
                         PrivateIPAllocationMethod = IPAllocationMethod.Dynamic,
-                        PublicIPAddress = new PublicIPAddress() { Id = ipAddress.Id }
+                        PublicIPAddress = new PublicIPAddress { Id = ipAddress.Id }
                     }
                 }
                 };
@@ -169,7 +170,7 @@ namespace ManageVirtualMachineExtension
 
                 var linuxVM = new VirtualMachine(location)
                 {
-                    NetworkProfile = new Azure.ResourceManager.Compute.Models.NetworkProfile { NetworkInterfaces = new[] { new NetworkInterfaceReference() { Id = nic.Id } } },
+                    NetworkProfile = new Azure.ResourceManager.Compute.Models.NetworkProfile { NetworkInterfaces = new[] { new NetworkInterfaceReference { Id = nic.Id } } },
                     OsProfile = new OSProfile
                     {
                         ComputerName = linuxVmName,
@@ -192,7 +193,7 @@ namespace ManageVirtualMachineExtension
                         },
                         DataDisks = new List<DataDisk>()
                     },
-                    HardwareProfile = new HardwareProfile() { VmSize = VirtualMachineSizeTypes.StandardD3V2 },
+                    HardwareProfile = new HardwareProfile { VmSize = VirtualMachineSizeTypes.StandardD3V2 },
                 };
 
                 linuxVM = await (await virtualMachines.StartCreateOrUpdateAsync(rgName, linuxVmName, linuxVM)).WaitForCompletionAsync();
@@ -312,7 +313,7 @@ namespace ManageVirtualMachineExtension
                 // Create IP Address
 
                 Utilities.Log("Creating a IP Address");
-                ipAddress = new PublicIPAddress()
+                ipAddress = new PublicIPAddress
                 {
                     PublicIPAddressVersion = Azure.ResourceManager.Network.Models.IPVersion.IPv4,
                     PublicIPAllocationMethod = IPAllocationMethod.Dynamic,
@@ -327,18 +328,18 @@ namespace ManageVirtualMachineExtension
                 // Create Network Interface #2
 
                 Utilities.Log("Creating a Network Interface #2");
-                nic = new NetworkInterface()
+                nic = new NetworkInterface
                 {
                     Location = location,
-                    IpConfigurations = new List<NetworkInterfaceIPConfiguration>()
+                    IpConfigurations = new List<NetworkInterfaceIPConfiguration>
                 {
-                    new NetworkInterfaceIPConfiguration()
+                    new NetworkInterfaceIPConfiguration
                     {
                         Name = "Primary",
                         Primary = true,
-                        Subnet = new Subnet() { Id = vnet.Subnets.First().Id },
+                        Subnet = new Subnet { Id = vnet.Subnets.First().Id },
                         PrivateIPAllocationMethod = IPAllocationMethod.Dynamic,
-                        PublicIPAddress = new PublicIPAddress() { Id = ipAddress.Id }
+                        PublicIPAddress = new PublicIPAddress { Id = ipAddress.Id }
                     }
                 }
                 };
@@ -484,7 +485,7 @@ namespace ManageVirtualMachineExtension
             }
         }
 
-        public static async Task Main(string[] args)
+        public static async Task Main8(string[] args)
         {
             try
             {
